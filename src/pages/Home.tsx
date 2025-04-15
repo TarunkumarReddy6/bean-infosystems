@@ -120,7 +120,7 @@ const Home = () => {
                 Empowering
               </ScrollAnimator>
               <ScrollAnimator animation="slide-in-up" threshold={0.1} delay={600}>
-                <div className="h-[1.2em] overflow-hidden relative mt-2">
+                <div className="h-[1.2em] overflow-hidden relative mt-2 text-center">
                   {words.map((word, index) => (
                     <span 
                       key={word}
@@ -161,14 +161,6 @@ const Home = () => {
                   </Link>
                 </MagneticButton>
               </ScrollAnimator>
-            </div>
-          </div>
-          
-          {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
-            <div className="flex flex-col items-center text-foreground/50 animate-bounce">
-              <span className="text-sm mb-2">Scroll to explore</span>
-              <ChevronDown size={20} />
             </div>
           </div>
         </div>
@@ -265,16 +257,16 @@ const Home = () => {
       </PageSection>
 
       {/* Horizontal Scrolling Section for Capabilities */}
-      <PageSection title="Our Capabilities" subtitle="Scroll horizontally to explore our expertise">
-        <HorizontalScroll className="flex-1 overflow-x-auto">
+      <PageSection title="Our Capabilities" subtitle="Explore our expertise">
+        <HorizontalScroll className="flex-1 overflow-x-auto" speed={0.8}>
           <div className="flex gap-6 py-4 min-w-max">
             {[
               { title: "Web Development", icon: Laptop },
-              { title: "Mobile Applications", icon: Smartphone },
-              { title: "Cloud Solutions", icon: Cloud },
-              { title: "UI/UX Design", icon: Palette },
+              { title: "Mobile Applications", icon: SmartphoneIcon },
+              { title: "Cloud Solutions", icon: CloudIcon },
+              { title: "UI/UX Design", icon: PaletteIcon },
               { title: "Data Analytics", icon: BarChart },
-              { title: "API Integration", icon: Link2 }
+              { title: "API Integration", icon: LinkIcon }
             ].map((item, index) => (
               <div key={index} className="w-[300px] flex-shrink-0">
                 <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
@@ -428,44 +420,36 @@ const Home = () => {
   );
 };
 
-// When you need to fix TypeScript errors, import missing components
-const Smartphone = React.forwardRef((props, ref) => (
-  <div ref={ref} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-      <line x1="12" y1="18" x2="12" y2="18" />
-    </svg>
-  </div>
-));
+// Fix TypeScript errors by properly implementing icon components with correct typing
+const SmartphoneIcon = ({ size = 24, ...props }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+    <line x1="12" y1="18" x2="12" y2="18" />
+  </svg>
+);
 
-const Cloud = React.forwardRef((props, ref) => (
-  <div ref={ref} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-    </svg>
-  </div>
-));
+const CloudIcon = ({ size = 24, ...props }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+  </svg>
+);
 
-const Palette = React.forwardRef((props, ref) => (
-  <div ref={ref} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="13.5" cy="6.5" r=".5" />
-      <circle cx="17.5" cy="10.5" r=".5" />
-      <circle cx="8.5" cy="7.5" r=".5" />
-      <circle cx="6.5" cy="12.5" r=".5" />
-      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
-    </svg>
-  </div>
-));
+const PaletteIcon = ({ size = 24, ...props }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="13.5" cy="6.5" r=".5" />
+    <circle cx="17.5" cy="10.5" r=".5" />
+    <circle cx="8.5" cy="7.5" r=".5" />
+    <circle cx="6.5" cy="12.5" r=".5" />
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+  </svg>
+);
 
-const Link2 = React.forwardRef((props, ref) => (
-  <div ref={ref} {...props}>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 17H7A5 5 0 0 1 7 7h2" />
-      <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
-      <line x1="8" y1="12" x2="16" y2="12" />
-    </svg>
-  </div>
-));
+const LinkIcon = ({ size = 24, ...props }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+    <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+    <line x1="8" y1="12" x2="16" y2="12" />
+  </svg>
+);
 
 export default Home;
