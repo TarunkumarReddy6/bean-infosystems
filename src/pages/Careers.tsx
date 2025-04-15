@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Briefcase, Users, Heart, Zap, Lightbulb, Award } from 'lucide-react';
 

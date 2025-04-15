@@ -1,7 +1,8 @@
+
 import React from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { 
   Lightbulb, 
   Target, 

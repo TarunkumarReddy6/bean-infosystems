@@ -2,7 +2,7 @@
 import React from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { Star, Quote } from 'lucide-react';
 
 const Clients = () => {

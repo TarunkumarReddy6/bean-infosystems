@@ -1,10 +1,9 @@
-
 import React from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
 import { Link } from 'react-router-dom';
 import { BarChart, Target, TrendingUp, ArrowRight, PieChart, LineChart, Compass, Presentation, Shield, Globe } from 'lucide-react';
-import Card from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 
 const AdvisoryServices = () => {
   const services = [

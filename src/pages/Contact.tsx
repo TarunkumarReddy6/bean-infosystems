@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import { Card } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
