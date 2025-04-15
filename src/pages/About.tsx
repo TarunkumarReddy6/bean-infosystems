@@ -1,15 +1,14 @@
-
 import React from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/card';
 import { 
   Lightbulb, 
   Target, 
   Heart, 
   Users, 
   Award, 
-  Tool, 
+  Wrench, 
   Edit, 
   Share2, 
   Map
@@ -229,7 +228,7 @@ const About = () => {
           </Card>
           <Card className="p-6">
             <div className="text-bean mb-4">
-              <Tool size={32} />
+              <Wrench size={32} />
             </div>
             <h3 className="text-lg font-bold mb-2">Implementation</h3>
             <p className="text-foreground/70">

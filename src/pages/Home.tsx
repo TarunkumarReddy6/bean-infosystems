@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Code, Users, BarChart, ExternalLink, Briefcase } from 'lucide-react';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/card';
 import FeaturedCard from '@/components/ui/FeaturedCard';
 
 const Home = () => {

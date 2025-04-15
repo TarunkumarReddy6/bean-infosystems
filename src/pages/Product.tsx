@@ -1,8 +1,7 @@
-
 import React from 'react';
 import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Users, Heart, Share2, Zap, Globe, Shield, CheckCircle } from 'lucide-react';
 
