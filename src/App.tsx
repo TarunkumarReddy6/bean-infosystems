@@ -5,6 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
+import CustomCursor from "./components/ui/CustomCursor";
+import PageLoader from "./components/ui/PageLoader";
+import ScrollProgress from "./components/ui/ScrollProgress";
 
 // Pages
 import Home from "./pages/Home";
@@ -19,6 +22,9 @@ import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
+// Import styles
+import "./App.css";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,6 +33,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PageLoader />
+        <CustomCursor />
+        <ScrollProgress />
         <Routes>
           <Route path="/" element={<MainLayout><Home /></MainLayout>} />
           <Route path="/about" element={<MainLayout><About /></MainLayout>} />

@@ -1,12 +1,47 @@
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Code, Users, BarChart, ExternalLink, Briefcase } from 'lucide-react';
+import { ArrowRight, Code, Users, BarChart, ExternalLink, Briefcase, ChevronDown, Zap, Laptop, Star } from 'lucide-react';
 import PageSection from '@/components/layout/PageSection';
 import { Card } from '@/components/ui/card';
 import FeaturedCard from '@/components/ui/FeaturedCard';
+import ScrollAnimator from '@/components/ui/ScrollAnimator';
+import MagneticButton from '@/components/ui/MagneticButton';
+import ParallaxSection from '@/components/ui/ParallaxSection';
+import CountUp from '@/components/ui/CountUp';
+import HorizontalScroll from '@/components/ui/HorizontalScroll';
 
 const Home = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  // For interactive word rotation
+  const words = ["Digital", "Business", "Creative", "Innovative"];
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  useEffect(() => {
+    const wordInterval = setInterval(() => {
+      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+    }, 3000);
+
+    return () => clearInterval(wordInterval);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      
+      // Parallax effect for hero section
+      if (heroRef.current) {
+        const yPos = window.scrollY * 0.4;
+        heroRef.current.style.transform = `translateY(${yPos}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const jobOpenings = [
     {
       title: "Senior Full-Stack Developer",
@@ -34,52 +69,116 @@ const Home = () => {
     }
   ];
 
+  const stats = [
+    { label: "Projects Completed", value: 320 },
+    { label: "Happy Clients", value: 150 },
+    { label: "Team Members", value: 45 },
+    { label: "Years of Experience", value: 12 }
+  ];
+
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative pt-28 pb-20 md:pt-36 md:pb-32 overflow-hidden">
-        {/* Abstract background elements */}
+      {/* Hero Section with Parallax */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background to-secondary/50 z-0"></div>
+        
+        {/* Animated background elements */}
         <div className="absolute inset-0 z-0 hero-gradient">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)]" style={{ backgroundSize: '50px 50px' }}></div>
         </div>
         
         {/* Floating elements */}
-        <div className="absolute top-1/4 right-[15%] w-48 h-48 bg-bean/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-[10%] w-72 h-72 bg-bean/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 right-[15%] w-48 h-48 bg-bean/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-[10%] w-72 h-72 bg-bean/10 rounded-full blur-3xl"></div>
         
-        <div className="container mx-auto px-4 relative z-10">
+        {/* Small floating particles */}
+        <div className="absolute inset-0 z-0">
+          {[...Array(15)].map((_, i) => (
+            <div 
+              key={i} 
+              className="absolute w-2 h-2 bg-bean/30 rounded-full"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animation: `float ${5 + Math.random() * 10}s infinite ease-in-out ${Math.random() * 5}s`
+              }}
+            ></div>
+          ))}
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10" ref={heroRef}>
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-block mb-6 px-3 py-1 border border-bean/30 rounded-full bg-card/40 backdrop-blur-sm text-bean text-sm">
-              Innovation that transforms
-            </div>
+            <ScrollAnimator animation="fade-in" threshold={0.1} delay={200}>
+              <div className="inline-block mb-6 px-3 py-1 border border-bean/30 rounded-full bg-card/40 backdrop-blur-sm text-bean text-sm">
+                <span className="animate-pulse mr-2">•</span>
+                Innovation that transforms
+              </div>
+            </ScrollAnimator>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in-up">
-              Empowering<br />
-              <span className="text-gradient">Digital Evolution</span>
+            <h1 className="text-4xl md:text-7xl font-bold mb-6">
+              <ScrollAnimator animation="slide-in-down" threshold={0.1} delay={300}>
+                Empowering
+              </ScrollAnimator>
+              <br />
+              <ScrollAnimator animation="slide-in-up" threshold={0.1} delay={600}>
+                <div className="h-[1.2em] overflow-hidden relative">
+                  {words.map((word, index) => (
+                    <span 
+                      key={word}
+                      className="text-gradient absolute transition-all duration-700 w-full"
+                      style={{
+                        opacity: currentWordIndex === index ? 1 : 0,
+                        transform: currentWordIndex === index ? 'translateY(0)' : 'translateY(100%)'
+                      }}
+                    >
+                      {word} Evolution
+                    </span>
+                  ))}
+                </div>
+              </ScrollAnimator>
             </h1>
             
-            <p className="text-xl text-foreground/70 mb-8 animate-fade-in">
-              We create innovative software solutions that help businesses thrive in the digital landscape. 
-              Our expert team delivers cutting-edge applications, strategic consulting, and transformative advisory services.
-            </p>
+            <ScrollAnimator animation="fade-in" threshold={0.1} delay={900}>
+              <p className="text-xl text-foreground/70 mb-8">
+                We create innovative software solutions that help businesses thrive in the digital landscape. 
+                Our expert team delivers cutting-edge applications, strategic consulting, and transformative advisory services.
+              </p>
+            </ScrollAnimator>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in">
-              <Link to="/services" className="btn-primary">
-                Explore Our Services
-                <ArrowRight size={18} className="ml-2" />
-              </Link>
-              <Link to="/contact" className="px-6 py-2 border border-border hover:border-bean rounded-md transition-all duration-300 flex items-center justify-center">
-                Contact Us
-              </Link>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <ScrollAnimator animation="slide-in-right" delay={1100}>
+                <MagneticButton className="btn-primary glow-effect">
+                  <Link to="/services" className="flex items-center">
+                    Explore Our Services
+                    <ArrowRight size={18} className="ml-2" />
+                  </Link>
+                </MagneticButton>
+              </ScrollAnimator>
+              
+              <ScrollAnimator animation="slide-in-left" delay={1200}>
+                <MagneticButton className="px-6 py-2 border border-border hover:border-bean rounded-md transition-all duration-300 flex items-center justify-center">
+                  <Link to="/contact" className="flex items-center">
+                    Contact Us
+                  </Link>
+                </MagneticButton>
+              </ScrollAnimator>
+            </div>
+          </div>
+          
+          {/* Scroll indicator */}
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div className="flex flex-col items-center text-foreground/50 animate-bounce">
+              <span className="text-sm mb-2">Scroll to explore</span>
+              <ChevronDown size={20} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Company Vision */}
-      <PageSection title="Our Vision & Mission" subtitle="Building the digital future through innovation, expertise, and strategic partnership">
+      {/* Company Vision with split layout */}
+      <PageSection>
         <div className="grid md:grid-cols-2 gap-10 items-center">
-          <div className="order-2 md:order-1">
+          <ScrollAnimator animation="slide-in-left" className="order-2 md:order-1">
             <h3 className="text-2xl font-semibold mb-4">Transforming Ideas into Digital Reality</h3>
             <p className="text-foreground/70 mb-4">
               At Bean Info System, we envision a world where technology empowers businesses to achieve their fullest potential. 
@@ -89,154 +188,283 @@ const Home = () => {
               We combine technical expertise with deep industry knowledge to create tailor-made solutions that address complex business challenges. 
               Our approach is collaborative, agile, and focused on delivering measurable results that drive growth and efficiency.
             </p>
-            <Link to="/about" className="text-bean flex items-center font-medium hover:underline">
+            <Link to="/about" className="text-bean flex items-center font-medium hover:underline interactive">
               Learn more about us
               <ArrowRight size={16} className="ml-1" />
             </Link>
-          </div>
-          <div className="order-1 md:order-2 rounded-xl overflow-hidden shadow-xl animate-float">
-            <div className="bg-gradient-to-br from-bean/10 to-bean/5 aspect-video rounded-xl flex items-center justify-center p-6 shadow-inner">
-              <div className="glass-card p-8 max-w-[80%] rotate-3 hover:rotate-0 transition-all duration-500">
-                <div className="text-4xl font-bold text-center mb-4 text-gradient">Bean Info System</div>
-                <div className="bg-secondary/80 h-4 rounded w-3/4 mx-auto mb-3"></div>
-                <div className="bg-secondary/80 h-4 rounded w-4/5 mx-auto mb-3"></div>
-                <div className="bg-secondary/80 h-4 rounded w-2/3 mx-auto"></div>
+          </ScrollAnimator>
+          
+          <ScrollAnimator animation="slide-in-right" className="order-1 md:order-2">
+            <div className="rounded-xl overflow-hidden shadow-xl rotate-element">
+              <div className="bg-gradient-to-br from-bean/10 to-bean/5 aspect-video rounded-xl flex items-center justify-center p-6 shadow-inner relative">
+                <div className="shimmer-effect"></div>
+                <div className="glass-card p-8 max-w-[80%] rotate-3 hover:rotate-0 transition-all duration-500">
+                  <div className="text-4xl font-bold text-center mb-4 text-gradient">Bean Info System</div>
+                  <div className="bg-secondary/80 h-4 rounded w-3/4 mx-auto mb-3"></div>
+                  <div className="bg-secondary/80 h-4 rounded w-4/5 mx-auto mb-3"></div>
+                  <div className="bg-secondary/80 h-4 rounded w-2/3 mx-auto"></div>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollAnimator>
         </div>
       </PageSection>
 
-      {/* Services Section */}
+      {/* Stats Section with Counter Animation */}
+      <ParallaxSection className="diagonal-section bg-secondary py-20" speed={0.3}>
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <ScrollAnimator 
+                key={index} 
+                animation="fade-in" 
+                delay={index * 200}
+                className="text-center p-6"
+              >
+                <CountUp 
+                  end={stat.value} 
+                  className="text-4xl md:text-5xl font-bold text-gradient mb-2" 
+                  duration={2500}
+                />
+                <p className="text-foreground/70">{stat.label}</p>
+              </ScrollAnimator>
+            ))}
+          </div>
+        </div>
+      </ParallaxSection>
+
+      {/* Services Section with Staggered Animation */}
       <PageSection dark title="Our Services" subtitle="Comprehensive solutions to solve your business challenges">
         <div className="grid md:grid-cols-3 gap-6">
-          <FeaturedCard
-            title="Application Development"
-            description="Custom software applications designed to meet your unique business requirements and drive digital transformation."
-            icon={<Code size={36} />}
-            link="/services/application-development"
-          />
-          <FeaturedCard
-            title="Consulting Services"
-            description="Strategic guidance from industry experts to optimize your technology investments and improve business processes."
-            icon={<Users size={36} />}
-            link="/services/consulting-services"
-          />
-          <FeaturedCard
-            title="Advisory Services"
-            description="Insights and recommendations to help you navigate digital trends and make informed business decisions."
-            icon={<BarChart size={36} />}
-            link="/services/advisory-services"
-          />
+          <ScrollAnimator animation="slide-in-up" delay={200}>
+            <FeaturedCard
+              title="Application Development"
+              description="Custom software applications designed to meet your unique business requirements and drive digital transformation."
+              icon={<Code size={36} className="text-bean" />}
+              link="/services/application-development"
+            />
+          </ScrollAnimator>
+          
+          <ScrollAnimator animation="slide-in-up" delay={400}>
+            <FeaturedCard
+              title="Consulting Services"
+              description="Strategic guidance from industry experts to optimize your technology investments and improve business processes."
+              icon={<Users size={36} className="text-bean" />}
+              link="/services/consulting-services"
+            />
+          </ScrollAnimator>
+          
+          <ScrollAnimator animation="slide-in-up" delay={600}>
+            <FeaturedCard
+              title="Advisory Services"
+              description="Insights and recommendations to help you navigate digital trends and make informed business decisions."
+              icon={<BarChart size={36} className="text-bean" />}
+              link="/services/advisory-services"
+            />
+          </ScrollAnimator>
         </div>
+      </PageSection>
+
+      {/* Horizontal Scrolling Section for Capabilities */}
+      <PageSection title="Our Capabilities" subtitle="Scroll horizontally to explore our expertise">
+        <HorizontalScroll>
+          {[
+            { title: "Web Development", icon: <Laptop size={36} /> },
+            { title: "Mobile Applications", icon: <Smartphone size={36} /> },
+            { title: "Cloud Solutions", icon: <Cloud size={36} /> },
+            { title: "UI/UX Design", icon: <Palette size={36} /> },
+            { title: "Data Analytics", icon: <BarChart size={36} /> },
+            { title: "API Integration", icon: <Link2 size={36} /> }
+          ].map((item, index) => (
+            <div key={index} className="horizontal-scroll-item">
+              <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
+                <div className="text-bean mb-4">
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <p className="text-foreground/70">
+                  Expert solutions tailored to your unique business needs.
+                </p>
+              </Card>
+            </div>
+          ))}
+        </HorizontalScroll>
       </PageSection>
 
       {/* SocialBirds Product Section */}
-      <PageSection title="Featured Product" subtitle="Connect communities for meaningful social impact">
+      <PageSection>
         <div className="bg-gradient-to-br from-bean/10 to-transparent rounded-2xl p-6 md:p-10">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
+            <ScrollAnimator animation="slide-in-left">
               <div className="mb-6">
-                <h3 className="text-3xl font-bold mb-3">SocialBirds</h3>
+                <h3 className="text-3xl font-bold mb-3">
+                  <span className="relative">
+                    SocialBirds
+                    <span className="absolute -top-3 -right-3 text-bean">
+                      <Star size={16} className="animate-pulse" />
+                    </span>
+                  </span>
+                </h3>
                 <p className="text-foreground/70">
                   An online platform helping organizations achieve their social impact objectives by connecting philanthropists with nonprofit initiatives in a meaningful way.
                 </p>
               </div>
               <ul className="space-y-3 mb-6">
-                <li className="flex items-start">
-                  <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span>Connect with like-minded philanthropists</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span>Create compelling fundraising campaigns</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <span>Enhance volunteer engagement strategies</span>
-                </li>
+                <ScrollAnimator animation="slide-in-up" delay={200}>
+                  <li className="flex items-start">
+                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
+                      <Zap size={16} />
+                    </div>
+                    <span>Connect with like-minded philanthropists</span>
+                  </li>
+                </ScrollAnimator>
+                <ScrollAnimator animation="slide-in-up" delay={400}>
+                  <li className="flex items-start">
+                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
+                      <Zap size={16} />
+                    </div>
+                    <span>Create compelling fundraising campaigns</span>
+                  </li>
+                </ScrollAnimator>
+                <ScrollAnimator animation="slide-in-up" delay={600}>
+                  <li className="flex items-start">
+                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
+                      <Zap size={16} />
+                    </div>
+                    <span>Enhance volunteer engagement strategies</span>
+                  </li>
+                </ScrollAnimator>
               </ul>
-              <Link to="/product" className="btn-primary inline-flex">
-                Learn More
-                <ExternalLink size={18} className="ml-2" />
-              </Link>
-            </div>
-            <div className="relative">
-              <div className="aspect-video bg-card rounded-xl overflow-hidden shadow-xl flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="text-4xl font-bold mb-2 text-gradient">SocialBirds</div>
-                  <p className="text-foreground/70 mb-4">Connecting communities for social good</p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Fundraising</div>
-                    <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Volunteering</div>
-                    <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Social Impact</div>
+              <MagneticButton strength={15} className="btn-primary inline-flex">
+                <Link to="/product" className="flex items-center">
+                  Learn More
+                  <ExternalLink size={18} className="ml-2" />
+                </Link>
+              </MagneticButton>
+            </ScrollAnimator>
+            
+            <ScrollAnimator animation="slide-in-right">
+              <div className="relative">
+                <div className="aspect-video bg-card rounded-xl overflow-hidden shadow-xl flex items-center justify-center rotate-element">
+                  <div className="text-center p-8">
+                    <div className="text-4xl font-bold mb-2 text-gradient">SocialBirds</div>
+                    <p className="text-foreground/70 mb-4">Connecting communities for social good</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Fundraising</div>
+                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Volunteering</div>
+                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Social Impact</div>
+                    </div>
                   </div>
                 </div>
+                {/* Decorative elements */}
+                <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-bean/10 rounded-full blur-xl"></div>
+                <div className="absolute -top-3 -left-3 w-12 h-12 bg-bean/20 rounded-full blur-md"></div>
               </div>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-bean/10 rounded-full blur-xl"></div>
-              <div className="absolute -top-3 -left-3 w-12 h-12 bg-bean/20 rounded-full blur-md"></div>
-            </div>
+            </ScrollAnimator>
           </div>
         </div>
       </PageSection>
 
-      {/* Careers Section */}
+      {/* Careers Section with Asymmetric Grid */}
       <PageSection dark title="Career Opportunities" subtitle="Join our team and help shape the future of technology">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="asymmetric-grid mb-6">
           {jobOpenings.map((job, index) => (
-            <Card key={job.id} className="p-6 hover:translate-y-[-5px]">
-              <div className="mb-3">
-                <h3 className="text-lg font-semibold mb-1">{job.title}</h3>
-                <div className="text-foreground/60 text-sm">{job.location}</div>
-                <div className="text-foreground/60 text-sm">{job.type}</div>
-              </div>
-              <Link 
-                to={`/careers/${job.id}`} 
-                className="text-bean hover:text-bean-light text-sm font-medium flex items-center"
-              >
-                View Details <ArrowRight size={14} className="ml-1" />
-              </Link>
-            </Card>
+            <ScrollAnimator 
+              key={job.id} 
+              animation="fade-in" 
+              delay={index * 150}
+            >
+              <Card className="p-6 h-full hover:translate-y-[-5px] transition-all duration-500 glow-effect">
+                <div className="mb-3">
+                  <h3 className="text-lg font-semibold mb-1">{job.title}</h3>
+                  <div className="text-foreground/60 text-sm">{job.location}</div>
+                  <div className="text-foreground/60 text-sm">{job.type}</div>
+                </div>
+                <Link 
+                  to={`/careers/${job.id}`} 
+                  className="text-bean hover:text-bean-light text-sm font-medium flex items-center interactive"
+                >
+                  View Details <ArrowRight size={14} className="ml-1" />
+                </Link>
+              </Card>
+            </ScrollAnimator>
           ))}
         </div>
         <div className="text-center">
-          <Link to="/careers" className="btn-primary inline-flex">
-            <Briefcase size={18} className="mr-2" />
-            Browse All Positions
-          </Link>
+          <MagneticButton className="btn-primary inline-flex">
+            <Link to="/careers" className="flex items-center">
+              <Briefcase size={18} className="mr-2" />
+              Browse All Positions
+            </Link>
+          </MagneticButton>
         </div>
       </PageSection>
 
       {/* CTA Section */}
-      <section className="py-20">
+      <ParallaxSection className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Digital Experience?</h2>
-            <p className="text-lg text-foreground/70 mb-8">
-              Let's discuss how Bean Info System can help your business thrive in the digital landscape.
-            </p>
-            <Link to="/contact" className="btn-primary inline-flex">
-              Get in Touch
-              <ArrowRight size={18} className="ml-2" />
-            </Link>
+            <ScrollAnimator animation="fade-in">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Digital Experience?</h2>
+            </ScrollAnimator>
+            <ScrollAnimator animation="fade-in" delay={200}>
+              <p className="text-lg text-foreground/70 mb-8">
+                Let's discuss how Bean Info System can help your business thrive in the digital landscape.
+              </p>
+            </ScrollAnimator>
+            <ScrollAnimator animation="fade-in" delay={400}>
+              <MagneticButton strength={20} className="btn-primary inline-flex">
+                <Link to="/contact" className="flex items-center">
+                  Get in Touch
+                  <ArrowRight size={18} className="ml-2" />
+                </Link>
+              </MagneticButton>
+            </ScrollAnimator>
           </div>
         </div>
-      </section>
+      </ParallaxSection>
     </>
   );
 };
+
+// When you need to fix TypeScript errors, import missing components
+const Smartphone = React.forwardRef((props, ref) => (
+  <div ref={ref} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+      <line x1="12" y1="18" x2="12" y2="18" />
+    </svg>
+  </div>
+));
+
+const Cloud = React.forwardRef((props, ref) => (
+  <div ref={ref} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+    </svg>
+  </div>
+));
+
+const Palette = React.forwardRef((props, ref) => (
+  <div ref={ref} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="13.5" cy="6.5" r=".5" />
+      <circle cx="17.5" cy="10.5" r=".5" />
+      <circle cx="8.5" cy="7.5" r=".5" />
+      <circle cx="6.5" cy="12.5" r=".5" />
+      <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+    </svg>
+  </div>
+));
+
+const Link2 = React.forwardRef((props, ref) => (
+  <div ref={ref} {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+      <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+      <line x1="8" y1="12" x2="16" y2="12" />
+    </svg>
+  </div>
+));
 
 export default Home;

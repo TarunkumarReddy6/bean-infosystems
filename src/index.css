@@ -45,18 +45,44 @@
     --sidebar-accent-foreground: 220 10% 98%;
     --sidebar-border: 220 20% 16%;
     --sidebar-ring: 217 91% 60%;
+    
+    --bean: 255 85% 56%;
+    --bean-light: 255 85% 76%;
+    --bean-dark: 255 85% 46%;
   }
 
   * {
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans overflow-x-hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-semibold;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--secondary));
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--bean));
   }
 }
 
@@ -95,6 +121,31 @@
   .section-padding {
     @apply py-16 sm:py-24;
   }
+  
+  .interactive-hover {
+    position: relative;
+    transition: transform 0.3s;
+    transform-style: preserve-3d;
+  }
+  
+  .interactive-hover::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(90deg, hsl(var(--bean)/0), hsl(var(--bean)/0.2), hsl(var(--bean)/0));
+    transform: translateZ(-1px);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 8px;
+  }
+  
+  .interactive-hover:hover {
+    transform: scale(1.02) translateZ(10px);
+  }
+  
+  .interactive-hover:hover::before {
+    opacity: 1;
+  }
 }
 
 @keyframes gradientShift {
@@ -106,6 +157,33 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
   }
 }
 
