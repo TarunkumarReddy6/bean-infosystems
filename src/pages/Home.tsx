@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Code, Users, BarChart, ExternalLink, Briefcase, ChevronDown, Zap, Laptop, Star } from 'lucide-react';
@@ -10,12 +9,13 @@ import MagneticButton from '@/components/ui/MagneticButton';
 import ParallaxSection from '@/components/ui/ParallaxSection';
 import CountUp from '@/components/ui/CountUp';
 import HorizontalScroll from '@/components/ui/HorizontalScroll';
+import Building from '@/components/ui/Building';
+import MapPin from '@/components/ui/MapPin';
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
-  // For interactive word rotation
   const words = ["Digital", "Business", "Creative", "Innovative"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
@@ -31,7 +31,6 @@ const Home = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
       
-      // Parallax effect for hero section
       if (heroRef.current) {
         const yPos = window.scrollY * 0.4;
         heroRef.current.style.transform = `translateY(${yPos}px)`;
@@ -47,24 +46,28 @@ const Home = () => {
       title: "Senior Full-Stack Developer",
       location: "San Francisco, CA",
       type: "Full-time",
+      department: "Engineering",
       id: "job-1"
     },
     {
       title: "UX/UI Designer",
       location: "Remote",
       type: "Full-time",
+      department: "Design",
       id: "job-2"
     },
     {
       title: "Product Manager",
       location: "New York, NY",
       type: "Full-time",
+      department: "Product",
       id: "job-3"
     },
     {
       title: "DevOps Engineer",
       location: "Austin, TX",
       type: "Full-time",
+      department: "Operations",
       id: "job-4"
     }
   ];
@@ -78,20 +81,16 @@ const Home = () => {
 
   return (
     <>
-      {/* Hero Section with Parallax */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background to-secondary/50 z-0"></div>
         
-        {/* Animated background elements */}
         <div className="absolute inset-0 z-0 hero-gradient">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px)]" style={{ backgroundSize: '50px 50px' }}></div>
         </div>
         
-        {/* Floating elements */}
         <div className="absolute top-1/4 right-[15%] w-48 h-48 bg-bean/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 left-[10%] w-72 h-72 bg-bean/10 rounded-full blur-3xl"></div>
         
-        {/* Small floating particles */}
         <div className="absolute inset-0 z-0">
           {[...Array(15)].map((_, i) => (
             <div 
@@ -166,7 +165,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Company Vision with split layout */}
       <PageSection>
         <div className="grid md:grid-cols-2 gap-10 items-center">
           <ScrollAnimator animation="slide-in-left" className="order-2 md:order-1">
@@ -201,7 +199,6 @@ const Home = () => {
         </div>
       </PageSection>
 
-      {/* Stats Section with Counter Animation */}
       <ParallaxSection className="diagonal-section bg-secondary py-20" speed={0.3}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -224,7 +221,6 @@ const Home = () => {
         </div>
       </ParallaxSection>
 
-      {/* Services Section with Staggered Animation */}
       <PageSection dark title="Our Services" subtitle="Comprehensive solutions to solve your business challenges">
         <div className="grid md:grid-cols-3 gap-6">
           <ScrollAnimator animation="slide-in-up" delay={200}>
@@ -256,7 +252,6 @@ const Home = () => {
         </div>
       </PageSection>
 
-      {/* Horizontal Scrolling Section for Capabilities */}
       <PageSection title="Our Capabilities" subtitle="Explore our expertise">
         <HorizontalScroll className="flex-1 overflow-x-auto" speed={0.8}>
           <div className="flex gap-6 py-4 min-w-max">
@@ -284,7 +279,6 @@ const Home = () => {
         </HorizontalScroll>
       </PageSection>
 
-      {/* SocialBirds Product Section */}
       <PageSection>
         <div className="bg-gradient-to-br from-bean/10 to-transparent rounded-2xl p-6 md:p-10">
           <div className="grid md:grid-cols-2 gap-10 items-center">
@@ -349,7 +343,6 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-                {/* Decorative elements */}
                 <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-bean/10 rounded-full blur-xl"></div>
                 <div className="absolute -top-3 -left-3 w-12 h-12 bg-bean/20 rounded-full blur-md"></div>
               </div>
@@ -358,42 +351,60 @@ const Home = () => {
         </div>
       </PageSection>
 
-      {/* Careers Section with Asymmetric Grid */}
       <PageSection dark title="Career Opportunities" subtitle="Join our team and help shape the future of technology">
-        <div className="asymmetric-grid mb-6">
-          {jobOpenings.map((job, index) => (
-            <ScrollAnimator 
-              key={job.id} 
-              animation="fade-in" 
-              delay={index * 150}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {jobOpenings.map((job) => (
+            <Card
+              key={job.id}
+              className="p-6 bg-card/50 backdrop-blur-sm border-border"
             >
-              <Card className="p-6 h-full hover:translate-y-[-5px] transition-all duration-500 glow-effect">
-                <div className="mb-3">
-                  <h3 className="text-lg font-semibold mb-1">{job.title}</h3>
-                  <div className="text-foreground/60 text-sm">{job.location}</div>
-                  <div className="text-foreground/60 text-sm">{job.type}</div>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between">
+                  <div className="p-2 rounded-lg bg-bean/10">
+                    <Briefcase size={20} className="text-bean" />
+                  </div>
+                  <span className="text-sm font-medium text-bean px-3 py-1 rounded-full bg-bean/10">
+                    {job.type}
+                  </span>
                 </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">{job.title}</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm text-foreground/70">
+                      <Building className="w-4 h-4 mr-2" />
+                      {job.department}
+                    </div>
+                    <div className="flex items-center text-sm text-foreground/70">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      {job.location}
+                    </div>
+                  </div>
+                </div>
+
                 <Link 
                   to={`/careers/${job.id}`} 
-                  className="text-bean hover:text-bean-light text-sm font-medium flex items-center interactive"
+                  className="inline-flex items-center text-sm font-medium text-bean"
                 >
-                  View Details <ArrowRight size={14} className="ml-1" />
+                  View Position
+                  <ArrowRight size={16} className="ml-1" />
                 </Link>
-              </Card>
-            </ScrollAnimator>
+              </div>
+            </Card>
           ))}
         </div>
+        
         <div className="text-center">
-          <MagneticButton className="btn-primary inline-flex">
-            <Link to="/careers" className="flex items-center">
-              <Briefcase size={18} className="mr-2" />
-              Browse All Positions
-            </Link>
-          </MagneticButton>
+          <Link 
+            to="/careers" 
+            className="inline-flex items-center justify-center px-6 py-3 bg-bean text-white font-medium rounded-md hover:bg-bean-dark transition-colors"
+          >
+            View All Positions
+            <ArrowRight size={18} className="ml-2" />
+          </Link>
         </div>
       </PageSection>
 
-      {/* CTA Section */}
       <ParallaxSection className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
@@ -420,7 +431,6 @@ const Home = () => {
   );
 };
 
-// Fix TypeScript errors by properly implementing icon components with correct typing
 const SmartphoneIcon = ({ size = 24, ...props }: { size?: number }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
     <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
