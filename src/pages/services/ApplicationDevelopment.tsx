@@ -3,7 +3,7 @@ import PageHero from '@/components/layout/PageHero';
 import PageSection from '@/components/layout/PageSection';
 import { Link } from 'react-router-dom';
 import { Code, Layers, Database, Shield, Globe, ArrowRight, Monitor, Smartphone, Laptop } from 'lucide-react';
-import Card from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 const ApplicationDevelopment = () => {
   const capabilities = [
