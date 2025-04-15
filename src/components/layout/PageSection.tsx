@@ -8,7 +8,7 @@ interface PageSectionProps {
   className?: string;
   children: React.ReactNode;
   dark?: boolean;
-  gradient?: 'blue' | 'aqua' | 'lavender' | none;
+  gradient?: 'blue' | 'aqua' | 'lavender' | undefined;
 }
 
 const PageSection: React.FC<PageSectionProps> = ({ 

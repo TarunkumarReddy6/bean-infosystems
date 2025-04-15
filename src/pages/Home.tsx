@@ -143,7 +143,7 @@ const Home = () => {
               </p>
             </ScrollAnimator>
             
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-row justify-center gap-4">
               <ScrollAnimator animation="slide-in-right" delay={1100}>
                 <MagneticButton className="btn-primary glow-effect">
                   <Link to="/services" className="flex items-center">

@@ -58,7 +58,7 @@ const Navbar = () => {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-background/90 backdrop-blur shadow-md py-3' : 'bg-transparent py-5'
+        scrolled || isOpen ? 'bg-background shadow-md py-3' : 'bg-transparent py-5'
       }`}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -71,7 +71,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-3">
             {navLinks.map((link) => 
               link.children ? (
                 <div key={link.name} className="relative group">
@@ -82,7 +82,7 @@ const Navbar = () => {
                     {link.name}
                     <ChevronDown size={16} />
                   </button>
-                  <div className="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left">
+                  <div className="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left z-50">
                     <div className="bg-card border border-border rounded-md shadow-lg overflow-hidden">
                       {link.children.map((child) => (
                         <Link 
@@ -120,15 +120,15 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         {isOpen && (
           <nav className="lg:hidden pt-6 pb-6">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 mobile-nav-menu p-4 bg-background border border-border rounded-lg shadow-lg">
               {navLinks.map((link) => 
                 link.children ? (
                   <div key={link.name} className="border-b border-border pb-2">
                     <button 
-                      className="flex items-center justify-between w-full py-2 text-left"
+                      className="flex items-center justify-center w-full py-2 text-center"
                       onClick={() => toggleDropdown(link.name)}
                     >
-                      {link.name}
+                      <span className="mr-2">{link.name}</span>
                       <ChevronDown 
                         size={16} 
                         className={`transition-transform duration-200 ${
@@ -137,7 +137,7 @@ const Navbar = () => {
                       />
                     </button>
                     {activeDropdown === link.name && (
-                      <div className="pl-4 mt-2 border-l border-border space-y-2">
+                      <div className="pl-4 mt-2 border-l border-border space-y-2 bg-background/90 backdrop-blur-sm rounded p-2">
                         {link.children.map((child) => (
                           <Link 
                             key={child.name}
