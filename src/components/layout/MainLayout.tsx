@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -11,15 +12,15 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const location = useLocation();
 
-  // Scroll to top when route changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-elegant-white">
       <Navbar />
       <main className="flex-grow">
+        <div className="gradient-section min-h-[20vh]"></div>
         {children}
       </main>
       <Footer />

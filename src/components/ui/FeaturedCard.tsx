@@ -21,12 +21,12 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
 }) => {
   const CardContent = () => (
     <>
-      {icon && <div className="text-bean mb-4">{icon}</div>}
-      <h3 className="text-xl font-semibold mb-3">{title}</h3>
+      {icon && <div className="text-tick-blue mb-4">{icon}</div>}
+      <h3 className="text-xl font-semibold mb-3 text-tick-blue">{title}</h3>
       <p className="text-foreground/70 mb-4">{description}</p>
       {link && (
-        <div className="flex items-center text-bean font-medium">
-          Learn More <ArrowRight size={16} className="ml-1" />
+        <div className="elegant-link group flex items-center">
+          Learn More <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
         </div>
       )}
     </>
@@ -35,7 +35,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
   return (
     <div 
       className={cn(
-        'p-6 rounded-lg bg-card border border-border hover:border-bean/40 transition-all duration-300 group hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]',
+        'elegant-card p-6',
         className
       )}
     >
