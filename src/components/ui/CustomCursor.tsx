@@ -29,7 +29,7 @@ const CustomCursor = () => {
         target.closest('a') ||
         target.classList.contains('interactive');
       
-      setIsHovering(isClickable);
+      setIsHovering(!!isClickable);
     };
 
     window.addEventListener('mousemove', updateMousePosition);

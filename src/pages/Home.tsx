@@ -119,13 +119,12 @@ const Home = () => {
               <ScrollAnimator animation="slide-in-down" threshold={0.1} delay={300}>
                 Empowering
               </ScrollAnimator>
-              <br />
               <ScrollAnimator animation="slide-in-up" threshold={0.1} delay={600}>
-                <div className="h-[1.2em] overflow-hidden relative">
+                <div className="h-[1.2em] overflow-hidden relative mt-2">
                   {words.map((word, index) => (
                     <span 
                       key={word}
-                      className="text-gradient absolute transition-all duration-700 w-full"
+                      className="text-gradient absolute w-full left-0 right-0 transition-all duration-700"
                       style={{
                         opacity: currentWordIndex === index ? 1 : 0,
                         transform: currentWordIndex === index ? 'translateY(0)' : 'translateY(100%)'
@@ -267,27 +266,29 @@ const Home = () => {
 
       {/* Horizontal Scrolling Section for Capabilities */}
       <PageSection title="Our Capabilities" subtitle="Scroll horizontally to explore our expertise">
-        <HorizontalScroll>
-          {[
-            { title: "Web Development", icon: <Laptop size={36} /> },
-            { title: "Mobile Applications", icon: <Smartphone size={36} /> },
-            { title: "Cloud Solutions", icon: <Cloud size={36} /> },
-            { title: "UI/UX Design", icon: <Palette size={36} /> },
-            { title: "Data Analytics", icon: <BarChart size={36} /> },
-            { title: "API Integration", icon: <Link2 size={36} /> }
-          ].map((item, index) => (
-            <div key={index} className="horizontal-scroll-item">
-              <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
-                <div className="text-bean mb-4">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-foreground/70">
-                  Expert solutions tailored to your unique business needs.
-                </p>
-              </Card>
-            </div>
-          ))}
+        <HorizontalScroll className="flex-1 overflow-x-auto">
+          <div className="flex gap-6 py-4 min-w-max">
+            {[
+              { title: "Web Development", icon: Laptop },
+              { title: "Mobile Applications", icon: Smartphone },
+              { title: "Cloud Solutions", icon: Cloud },
+              { title: "UI/UX Design", icon: Palette },
+              { title: "Data Analytics", icon: BarChart },
+              { title: "API Integration", icon: Link2 }
+            ].map((item, index) => (
+              <div key={index} className="w-[300px] flex-shrink-0">
+                <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
+                  <div className="text-bean mb-4">
+                    <item.icon size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-foreground/70">
+                    Expert solutions tailored to your unique business needs.
+                  </p>
+                </Card>
+              </div>
+            ))}
+          </div>
         </HorizontalScroll>
       </PageSection>
 

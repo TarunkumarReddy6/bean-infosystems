@@ -10,7 +10,7 @@ interface HorizontalScrollProps {
 const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
   children,
   className = '',
-  speed = 0.2,
+  speed = 0.5,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,10 +22,10 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      scrollContainer.scrollLeft += e.deltaY * speed;
+      const delta = e.deltaY || e.deltaX;
+      scrollContainer.scrollLeft += delta * speed;
     };
 
-    // Use passive: false to prevent browser default scroll
     container.addEventListener('wheel', handleWheel, { passive: false });
     
     return () => {
@@ -34,10 +34,17 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
   }, [speed]);
 
   return (
-    <div ref={containerRef} className={`relative ${className}`}>
+    <div 
+      ref={containerRef} 
+      className={`w-full overflow-hidden ${className}`}
+    >
       <div 
         ref={scrollRef} 
-        className="horizontal-scroll-section"
+        className="overflow-x-auto scrollbar-hide"
+        style={{
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch',
+        }}
       >
         {children}
       </div>
