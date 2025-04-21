@@ -1,6 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Code, Users, BarChart, ExternalLink, Briefcase, ChevronDown, Zap, Laptop, Star } from 'lucide-react';
+import {
+  ArrowRight,
+  Code,
+  Users,
+  BarChart,
+  ExternalLink,
+  ChevronDown,
+  Zap,
+  Laptop,
+  Star,
+  User,
+  UserRound,
+  UserCheck,
+  UserPlus,
+} from 'lucide-react';
 import PageSection from '@/components/layout/PageSection';
 import { Card } from '@/components/ui/card';
 import FeaturedCard from '@/components/ui/FeaturedCard';
@@ -8,7 +22,13 @@ import ScrollAnimator from '@/components/ui/ScrollAnimator';
 import MagneticButton from '@/components/ui/MagneticButton';
 import ParallaxSection from '@/components/ui/ParallaxSection';
 import CountUp from '@/components/ui/CountUp';
-import HorizontalScroll from '@/components/ui/HorizontalScroll';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
 import Building from '@/components/ui/Building';
 import MapPin from '@/components/ui/MapPin';
 
@@ -47,28 +67,32 @@ const Home = () => {
       location: "San Francisco, CA",
       type: "Full-time",
       department: "Engineering",
-      id: "job-1"
+      id: "job-1",
+      icon: <User className="text-bean" size={20} />
     },
     {
       title: "UX/UI Designer",
       location: "Remote",
       type: "Full-time",
       department: "Design",
-      id: "job-2"
+      id: "job-2",
+      icon: <UserRound className="text-bean" size={20} />
     },
     {
       title: "Product Manager",
       location: "New York, NY",
       type: "Full-time",
       department: "Product",
-      id: "job-3"
+      id: "job-3",
+      icon: <UserCheck className="text-bean" size={20} />
     },
     {
       title: "DevOps Engineer",
       location: "Austin, TX",
       type: "Full-time",
       department: "Operations",
-      id: "job-4"
+      id: "job-4",
+      icon: <UserPlus className="text-bean" size={20} />
     }
   ];
 
@@ -253,101 +277,35 @@ const Home = () => {
       </PageSection>
 
       <PageSection title="Our Capabilities" subtitle="Explore our expertise">
-        <HorizontalScroll className="flex-1 overflow-x-auto" speed={0.8}>
-          <div className="flex gap-6 py-4 min-w-max">
-            {[
-              { title: "Web Development", icon: Laptop },
-              { title: "Mobile Applications", icon: SmartphoneIcon },
-              { title: "Cloud Solutions", icon: CloudIcon },
-              { title: "UI/UX Design", icon: PaletteIcon },
-              { title: "Data Analytics", icon: BarChart },
-              { title: "API Integration", icon: LinkIcon }
-            ].map((item, index) => (
-              <div key={index} className="w-[300px] flex-shrink-0">
-                <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
-                  <div className="text-bean mb-4">
-                    <item.icon size={24} />
+        <div className="relative">
+          <Carousel>
+            <CarouselPrevious />
+            <CarouselContent>
+              {[
+                { title: "Web Development", icon: Laptop },
+                { title: "Mobile Applications", icon: SmartphoneIcon },
+                { title: "Cloud Solutions", icon: CloudIcon },
+                { title: "UI/UX Design", icon: PaletteIcon },
+                { title: "Data Analytics", icon: BarChart },
+                { title: "API Integration", icon: LinkIcon }
+              ].map((item, index) => (
+                <CarouselItem key={index} className="flex justify-center items-center">
+                  <div className="w-[300px] flex-shrink-0">
+                    <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
+                      <div className="text-bean mb-4">
+                        <item.icon size={24} />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                      <p className="text-foreground/70">
+                        Expert solutions tailored to your unique business needs.
+                      </p>
+                    </Card>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="text-foreground/70">
-                    Expert solutions tailored to your unique business needs.
-                  </p>
-                </Card>
-              </div>
-            ))}
-          </div>
-        </HorizontalScroll>
-      </PageSection>
-
-      <PageSection>
-        <div className="bg-gradient-to-br from-bean/10 to-transparent rounded-2xl p-6 md:p-10">
-          <div className="grid md:grid-cols-2 gap-10 items-center">
-            <ScrollAnimator animation="slide-in-left">
-              <div className="mb-6">
-                <h3 className="text-3xl font-bold mb-3">
-                  <span className="relative">
-                    SocialBirds
-                    <span className="absolute -top-3 -right-3 text-bean">
-                      <Star size={16} className="animate-pulse" />
-                    </span>
-                  </span>
-                </h3>
-                <p className="text-foreground/70">
-                  An online platform helping organizations achieve their social impact objectives by connecting philanthropists with nonprofit initiatives in a meaningful way.
-                </p>
-              </div>
-              <ul className="space-y-3 mb-6">
-                <ScrollAnimator animation="slide-in-up" delay={200}>
-                  <li className="flex items-start">
-                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                      <Zap size={16} />
-                    </div>
-                    <span>Connect with like-minded philanthropists</span>
-                  </li>
-                </ScrollAnimator>
-                <ScrollAnimator animation="slide-in-up" delay={400}>
-                  <li className="flex items-start">
-                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                      <Zap size={16} />
-                    </div>
-                    <span>Create compelling fundraising campaigns</span>
-                  </li>
-                </ScrollAnimator>
-                <ScrollAnimator animation="slide-in-up" delay={600}>
-                  <li className="flex items-start">
-                    <div className="bg-bean/20 p-1 rounded text-bean mr-3 mt-1">
-                      <Zap size={16} />
-                    </div>
-                    <span>Enhance volunteer engagement strategies</span>
-                  </li>
-                </ScrollAnimator>
-              </ul>
-              <MagneticButton strength={15} className="btn-primary inline-flex">
-                <Link to="/product" className="flex items-center">
-                  Learn More
-                  <ExternalLink size={18} className="ml-2" />
-                </Link>
-              </MagneticButton>
-            </ScrollAnimator>
-            
-            <ScrollAnimator animation="slide-in-right">
-              <div className="relative">
-                <div className="aspect-video bg-card rounded-xl overflow-hidden shadow-xl flex items-center justify-center rotate-element">
-                  <div className="text-center p-8">
-                    <div className="text-4xl font-bold mb-2 text-gradient">SocialBirds</div>
-                    <p className="text-foreground/70 mb-4">Connecting communities for social good</p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Fundraising</div>
-                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Volunteering</div>
-                      <div className="bg-bean/20 rounded-full px-3 py-1 text-xs text-bean">Social Impact</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute -bottom-5 -right-5 w-20 h-20 bg-bean/10 rounded-full blur-xl"></div>
-                <div className="absolute -top-3 -left-3 w-12 h-12 bg-bean/20 rounded-full blur-md"></div>
-              </div>
-            </ScrollAnimator>
-          </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselNext />
+          </Carousel>
         </div>
       </PageSection>
 
@@ -361,7 +319,7 @@ const Home = () => {
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="p-2 rounded-lg bg-bean/10">
-                    <Briefcase size={20} className="text-bean" />
+                    {job.icon}
                   </div>
                   <span className="text-sm font-medium text-bean px-3 py-1 rounded-full bg-bean/10">
                     {job.type}
