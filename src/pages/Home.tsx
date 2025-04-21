@@ -103,6 +103,15 @@ const Home = () => {
     { label: "Years of Experience", value: 12 }
   ];
 
+  // --- New carousel options for "Our Capabilities" section ---
+  // Embla options for 3 slides per view
+  const carouselOptions = {
+    align: 'start' as const,
+    slidesToScroll: 3,
+    dragFree: false,
+    loop: false,
+  };
+
   return (
     <>
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -278,7 +287,7 @@ const Home = () => {
 
       <PageSection title="Our Capabilities" subtitle="Explore our expertise">
         <div className="relative">
-          <Carousel>
+          <Carousel opts={{ align: "start", slidesToScroll: 3 }}>
             <CarouselPrevious />
             <CarouselContent>
               {[
@@ -289,7 +298,10 @@ const Home = () => {
                 { title: "Data Analytics", icon: BarChart },
                 { title: "API Integration", icon: LinkIcon }
               ].map((item, index) => (
-                <CarouselItem key={index} className="flex justify-center items-center">
+                <CarouselItem 
+                  key={index} 
+                  className="flex justify-center items-center basis-full md:basis-1/3"
+                >
                   <div className="w-[300px] flex-shrink-0">
                     <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
                       <div className="text-bean mb-4">
