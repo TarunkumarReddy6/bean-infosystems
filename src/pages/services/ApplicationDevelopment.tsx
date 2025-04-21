@@ -4,6 +4,13 @@ import PageSection from '@/components/layout/PageSection';
 import { Link } from 'react-router-dom';
 import { Code, Layers, Database, Shield, Globe, ArrowRight, Monitor, Smartphone, Laptop } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from '@/components/ui/carousel';
 
 const ApplicationDevelopment = () => {
   const capabilities = [
@@ -42,23 +49,33 @@ const ApplicationDevelopment = () => {
   const process = [
     {
       title: "Discovery & Planning",
-      description: "We begin by understanding your business objectives, user needs, and technical requirements to establish a solid foundation for the project."
+      description: "We begin by understanding your business objectives, user needs, and technical requirements to establish a solid foundation for the project.",
+      color: "bg-bean/10",
+      borderColor: "border-bean/30"
     },
     {
       title: "Design & Architecture",
-      description: "Our team creates detailed designs and technical architectures that align with your requirements and industry best practices."
+      description: "Our team creates detailed designs and technical architectures that align with your requirements and industry best practices.",
+      color: "bg-bean/15",
+      borderColor: "border-bean/40"
     },
     {
       title: "Development & Testing",
-      description: "We employ agile development methodologies, coupled with rigorous testing, to deliver high-quality applications efficiently."
+      description: "We employ agile development methodologies, coupled with rigorous testing, to deliver high-quality applications efficiently.",
+      color: "bg-bean/20",
+      borderColor: "border-bean/50"
     },
     {
       title: "Deployment & Integration",
-      description: "We ensure smooth deployment and integration with your existing systems and processes."
+      description: "We ensure smooth deployment and integration with your existing systems and processes.",
+      color: "bg-bean/25",
+      borderColor: "border-bean/60"
     },
     {
       title: "Maintenance & Support",
-      description: "Our team provides ongoing maintenance and support to ensure your application continues to perform optimally."
+      description: "Our team provides ongoing maintenance and support to ensure your application continues to perform optimally.",
+      color: "bg-bean/30",
+      borderColor: "border-bean/70"
     }
   ];
 
@@ -128,33 +145,50 @@ const ApplicationDevelopment = () => {
         </div>
       </PageSection>
 
-      {/* Development Process */}
+      {/* Development Process - New Design */}
       <PageSection title="Our Development Process" subtitle="A structured approach to delivering exceptional applications">
-        <div className="relative">
-          {/* Process center line */}
-          <div className="absolute left-7 md:left-1/2 transform md:-translate-x-1/2 h-full w-0.5 bg-border"></div>
-          
-          <div className="space-y-8">
+        <div className="space-y-6">
+          {/* Process steps as connected cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
             {process.map((step, index) => (
-              <div key={index} className="relative grid md:grid-cols-2 gap-6 items-start">
-                {/* Step number */}
-                <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 w-14 h-14 rounded-full bg-bean flex items-center justify-center text-white font-bold text-xl z-10">
-                  {index + 1}
-                </div>
-                
-                {/* Content */}
-                <div className={`ml-20 md:ml-0 ${index % 2 === 0 ? 'md:text-right md:pr-16' : 'md:order-2 md:pl-16'}`}>
-                  <Card className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                    <p className="text-foreground/70">{step.description}</p>
-                  </Card>
-                </div>
-                
-                <div className={`hidden md:block ${index % 2 === 0 ? 'md:order-2 md:pl-16' : 'md:pr-16'}`}>
-                  {/* Empty space to maintain grid alignment on desktop */}
-                </div>
+              <div key={index} className="flex flex-col">
+                <Card className={`p-6 h-full relative ${step.color} border ${step.borderColor} transition-all hover:shadow-md`}>
+                  <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-bean flex items-center justify-center text-white font-bold">
+                    {index + 1}
+                  </div>
+                  
+                  <h3 className="text-xl font-bold mb-3 mt-2">{step.title}</h3>
+                  <p className="text-foreground/70">{step.description}</p>
+                  
+                  {index < process.length - 1 && (
+                    <div className="hidden lg:block absolute -right-4 top-1/2 transform -translate-y-1/2 z-10">
+                      <ArrowRight className="text-bean" size={20} />
+                    </div>
+                  )}
+                </Card>
               </div>
             ))}
+          </div>
+          
+          {/* Mobile view carousel */}
+          <div className="lg:hidden mt-8">
+            <Carousel>
+              <CarouselPrevious />
+              <CarouselContent>
+                {process.map((step, index) => (
+                  <CarouselItem key={index}>
+                    <Card className={`p-6 relative ${step.color} border ${step.borderColor}`}>
+                      <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-bean flex items-center justify-center text-white font-bold">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-xl font-bold mb-3 mt-2">{step.title}</h3>
+                      <p className="text-foreground/70">{step.description}</p>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </PageSection>

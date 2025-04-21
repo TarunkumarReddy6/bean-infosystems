@@ -12,7 +12,13 @@ import {
   Wrench, 
   Edit, 
   Share2, 
-  Map
+  Map,
+  Calendar,
+  Building,
+  Globe,
+  Rocket,
+  Zap,
+  BookOpen
 } from 'lucide-react';
 
 const About = () => {
@@ -20,32 +26,38 @@ const About = () => {
     {
       year: "2010",
       title: "Founding",
-      description: "Bean Info System was founded with a vision to provide innovative software solutions to businesses across industries."
+      description: "Bean Info System was founded with a vision to provide innovative software solutions to businesses across industries.",
+      icon: <Building size={24} />
     },
     {
       year: "2013",
       title: "Expansion",
-      description: "Expanded our services to include consulting and advisory solutions to provide comprehensive support to our clients."
+      description: "Expanded our services to include consulting and advisory solutions to provide comprehensive support to our clients.",
+      icon: <Rocket size={24} />
     },
     {
       year: "2016",
       title: "Global Presence",
-      description: "Established international offices and partnerships to better serve our global client base."
+      description: "Established international offices and partnerships to better serve our global client base.",
+      icon: <Globe size={24} />
     },
     {
       year: "2018",
       title: "SocialBirds Launch",
-      description: "Launched our flagship product, SocialBirds, to help connect philanthropists with nonprofit organizations."
+      description: "Launched our flagship product, SocialBirds, to help connect philanthropists with nonprofit organizations.",
+      icon: <Zap size={24} />
     },
     {
       year: "2021",
       title: "Digital Transformation",
-      description: "Pivoted to focus on helping businesses navigate digital transformation in a rapidly changing landscape."
+      description: "Pivoted to focus on helping businesses navigate digital transformation in a rapidly changing landscape.",
+      icon: <BookOpen size={24} />
     },
     {
       year: "Present",
       title: "Continued Innovation",
-      description: "Continuing to innovate and adapt to emerging technologies to better serve our clients' evolving needs."
+      description: "Continuing to innovate and adapt to emerging technologies to better serve our clients' evolving needs.",
+      icon: <Calendar size={24} />
     }
   ];
 
@@ -183,9 +195,9 @@ const About = () => {
           <div className="space-y-12">
             {timeline.map((item, index) => (
               <div key={index} className={`relative grid md:grid-cols-2 gap-6 items-center`}>
-                {/* Year marker */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-10 h-10 rounded-full bg-bean flex items-center justify-center text-white font-semibold z-10">
-                  {index + 1}
+                {/* Icon marker instead of number */}
+                <div className="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-bean flex items-center justify-center text-white z-10">
+                  {item.icon}
                 </div>
                 
                 {/* Content */}
