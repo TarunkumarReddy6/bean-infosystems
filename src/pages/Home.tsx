@@ -217,13 +217,12 @@ const Home = () => {
           </ScrollAnimator>
           
           <ScrollAnimator animation="slide-in-right" className="order-1 md:order-2">
-            <div className="rounded-xl overflow-hidden shadow-xl rotate-element">
-              <div className="bg-gradient-to-br from-bean/10 to-bean/5 aspect-video rounded-xl flex items-center justify-center p-6 shadow-inner relative">
+            <div className=" overflow-hidden shadow-xl rotate-element">
+              <div className="bg-gradient-to-br from-bean/10 to-bean/5 aspect-video  flex items-center justify-center p-6 shadow-inner relative">
                 <div className="shimmer-effect"></div>
-                <div className="glass-card p-8 max-w-[80%] rotate-3 hover:rotate-0 transition-all duration-500">
-                  <div className="text-4xl font-bold text-center mb-4 text-gradient">Bean Info System</div>
-                  <div className="bg-secondary/80 h-4 rounded w-3/4 mx-auto mb-3"></div>
-                  <div className="bg-secondary/80 h-4 rounded w-4/5 mx-auto mb-3"></div>
+                <div className="glass-card p-1 max-w-[80%] hover:rotate-0 transition-all duration-500">
+                    <div className="text-4xl font-bold text-center mb-4 text-gradient">Bean Info System</div>
+                    <img src="/images/career.jpg" alt="Career" className="w-full h-auto rounded-md mt-4" />
                   <div className="bg-secondary/80 h-4 rounded w-2/3 mx-auto"></div>
                 </div>
               </div>
