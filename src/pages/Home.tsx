@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -26,8 +27,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
 } from '@/components/ui/carousel';
 import Building from '@/components/ui/Building';
 import MapPin from '@/components/ui/MapPin';
@@ -35,6 +34,9 @@ import MapPin from '@/components/ui/MapPin';
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
+  const isDraggingRef = useRef(false);
 
   const words = ["Digital", "Business", "Creative", "Innovative"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -59,6 +61,93 @@ const Home = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Auto-scrolling carousel setup
+  useEffect(() => {
+    const startAutoScroll = () => {
+      if (carouselRef.current && !isDraggingRef.current) {
+        const scrollAmount = 1; // Adjust for slower/faster scrolling
+        carouselRef.current.scrollLeft += scrollAmount;
+        
+        // Loop back to start when reaching the end
+        if (
+          carouselRef.current.scrollLeft + carouselRef.current.clientWidth >=
+          carouselRef.current.scrollWidth
+        ) {
+          carouselRef.current.scrollLeft = 0;
+        }
+      }
+      
+      autoScrollRef.current = setTimeout(startAutoScroll, 20); // Adjust timing for smoother scrolling
+    };
+    
+    // Start auto-scrolling
+    startAutoScroll();
+    
+    return () => {
+      if (autoScrollRef.current) {
+        clearTimeout(autoScrollRef.current);
+      }
+    };
+  }, []);
+
+  // Handle manual interaction with the carousel
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    
+    const handleMouseDown = () => {
+      isDraggingRef.current = true;
+      if (autoScrollRef.current) clearTimeout(autoScrollRef.current);
+    };
+    
+    const handleMouseUp = () => {
+      isDraggingRef.current = false;
+      
+      // Resume auto-scrolling after a short delay
+      setTimeout(() => {
+        const startAutoScroll = () => {
+          if (carouselRef.current && !isDraggingRef.current) {
+            carouselRef.current.scrollLeft += 1;
+            
+            if (
+              carouselRef.current.scrollLeft + carouselRef.current.clientWidth >=
+              carouselRef.current.scrollWidth
+            ) {
+              carouselRef.current.scrollLeft = 0;
+            }
+          }
+          
+          autoScrollRef.current = setTimeout(startAutoScroll, 20);
+        };
+        
+        startAutoScroll();
+      }, 1000); // Resume after 1 second of inactivity
+    };
+    
+    const handleTouchStart = () => {
+      isDraggingRef.current = true;
+      if (autoScrollRef.current) clearTimeout(autoScrollRef.current);
+    };
+    
+    const handleTouchEnd = () => {
+      handleMouseUp(); // Reuse the mouseup logic
+    };
+    
+    carousel.addEventListener('mousedown', handleMouseDown);
+    carousel.addEventListener('mouseup', handleMouseUp);
+    carousel.addEventListener('mouseleave', handleMouseUp);
+    carousel.addEventListener('touchstart', handleTouchStart);
+    carousel.addEventListener('touchend', handleTouchEnd);
+    
+    return () => {
+      carousel.removeEventListener('mousedown', handleMouseDown);
+      carousel.removeEventListener('mouseup', handleMouseUp);
+      carousel.removeEventListener('mouseleave', handleMouseUp);
+      carousel.removeEventListener('touchstart', handleTouchStart);
+      carousel.removeEventListener('touchend', handleTouchEnd);
+    };
   }, []);
 
   const jobOpenings = [
@@ -103,14 +192,15 @@ const Home = () => {
     { label: "Years of Experience", value: 12 }
   ];
 
-  // --- New carousel options for "Our Capabilities" section ---
-  // Embla options for 3 slides per view
-  const carouselOptions = {
-    align: 'start' as const,
-    slidesToScroll: 3,
-    dragFree: false,
-    loop: false,
-  };
+  // --- Updated capabilities array for the auto-scrolling carousel ---
+  const capabilities = [
+    { title: "Web Development", icon: Laptop },
+    { title: "Mobile Applications", icon: SmartphoneIcon },
+    { title: "Cloud Solutions", icon: CloudIcon },
+    { title: "UI/UX Design", icon: PaletteIcon },
+    { title: "Data Analytics", icon: BarChart },
+    { title: "API Integration", icon: LinkIcon }
+  ];
 
   return (
     <>
@@ -203,7 +293,7 @@ const Home = () => {
           <ScrollAnimator animation="slide-in-left" className="order-2 md:order-1">
             <h3 className="text-2xl font-semibold mb-4">Transforming Ideas into Digital Reality</h3>
             <p className="text-foreground/70 mb-4">
-              At Bean Info System, we envision a world where technology empowers businesses to achieve their fullest potential. 
+              At BeanInfo System, we envision a world where technology empowers businesses to achieve their fullest potential. 
               Our mission is to deliver exceptional digital experiences through innovative software solutions and strategic partnerships.
             </p>
             <p className="text-foreground/70 mb-6">
@@ -221,7 +311,7 @@ const Home = () => {
               <div className="bg-gradient-to-br from-bean/10 to-bean/5 aspect-video  flex items-center justify-center p-6 shadow-inner relative">
                 <div className="shimmer-effect"></div>
                 <div className="glass-card p-1 max-w-[80%] hover:rotate-0 transition-all duration-500">
-                    <div className="text-4xl font-bold text-center mb-4 text-gradient">Bean Info System</div>
+                    <div className="text-4xl font-bold text-center mb-4 text-gradient">BeanInfo System</div>
                     <img src="/images/career.jpg" alt="Career" className="w-full h-auto rounded-md mt-4" />
                   <div className="bg-secondary/80 h-4 rounded w-2/3 mx-auto"></div>
                 </div>
@@ -285,38 +375,47 @@ const Home = () => {
       </PageSection>
 
       <PageSection title="Our Capabilities" subtitle="Explore our expertise">
-        <div className="relative">
-          <Carousel opts={{ align: "start", slidesToScroll: 3 }}>
-            <CarouselPrevious />
-            <CarouselContent>
-              {[
-                { title: "Web Development", icon: Laptop },
-                { title: "Mobile Applications", icon: SmartphoneIcon },
-                { title: "Cloud Solutions", icon: CloudIcon },
-                { title: "UI/UX Design", icon: PaletteIcon },
-                { title: "Data Analytics", icon: BarChart },
-                { title: "API Integration", icon: LinkIcon }
-              ].map((item, index) => (
-                <CarouselItem 
-                  key={index} 
-                  className="flex justify-center items-center basis-full md:basis-1/3"
-                >
-                  <div className="w-[300px] flex-shrink-0">
-                    <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
-                      <div className="text-bean mb-4">
-                        <item.icon size={24} />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                      <p className="text-foreground/70">
-                        Expert solutions tailored to your unique business needs.
-                      </p>
-                    </Card>
+        <div className="overflow-hidden relative">
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto gap-6 py-4 scrollbar-hide cursor-grab"
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            {/* Add duplicate items at beginning and end for seamless looping */}
+            {capabilities.map((item, index) => (
+              <div 
+                key={`card-${index}`}
+                className="min-w-[300px] flex-shrink-0"
+              >
+                <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
+                  <div className="text-bean mb-4">
+                    <item.icon size={24} />
                   </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselNext />
-          </Carousel>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-foreground/70">
+                    Expert solutions tailored to your unique business needs.
+                  </p>
+                </Card>
+              </div>
+            ))}
+            {/* Duplicate first few items to create seamless loop effect */}
+            {capabilities.slice(0, 3).map((item, index) => (
+              <div 
+                key={`duplicate-${index}`}
+                className="min-w-[300px] flex-shrink-0"
+              >
+                <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
+                  <div className="text-bean mb-4">
+                    <item.icon size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-foreground/70">
+                    Expert solutions tailored to your unique business needs.
+                  </p>
+                </Card>
+              </div>
+            ))}
+          </div>
         </div>
       </PageSection>
 
@@ -382,7 +481,7 @@ const Home = () => {
             </ScrollAnimator>
             <ScrollAnimator animation="fade-in" delay={200}>
               <p className="text-lg text-foreground/70 mb-8">
-                Let's discuss how Bean Info System can help your business thrive in the digital landscape.
+                Let's discuss how BeanInfo System can help your business thrive in the digital landscape.
               </p>
             </ScrollAnimator>
             <ScrollAnimator animation="fade-in" delay={400}>
