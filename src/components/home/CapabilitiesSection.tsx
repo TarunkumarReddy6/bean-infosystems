@@ -2,8 +2,16 @@
 import React from 'react';
 import { Laptop, BarChart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import HorizontalScroll from '@/components/ui/HorizontalScroll';
 import PageSection from '@/components/layout/PageSection';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import { useEffect, useRef } from "react";
+import { cn } from '@/lib/utils';
 
 interface IconProps {
   size?: number;
@@ -50,32 +58,95 @@ const CapabilitiesSection = () => {
     { title: "API Integration", icon: LinkIcon }
   ];
 
+  // Add duplicates to create a seamless loop effect
+  const duplicatedCapabilities = [...capabilities, ...capabilities];
+  
+  // Reference to the carousel API
+  const carouselRef = useRef<any>(null);
+  const autoScrollRef = useRef<number | null>(null);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const startAutoScroll = () => {
+      if (!carouselRef.current?.api) return;
+      
+      const scrollOneItem = () => {
+        const api = carouselRef.current.api;
+        
+        // If near the end, smoothly go back to the beginning
+        if (api.selectedScrollSnap() >= capabilities.length - 1) {
+          // Silently jump to the duplicate area without animation
+          api.scrollTo(0, false);
+          
+          // Then continue normal scrolling
+          setTimeout(() => {
+            api.scrollNext();
+          }, 50);
+        } else {
+          api.scrollNext();
+        }
+        
+        autoScrollRef.current = requestAnimationFrame(scrollOneItem);
+      };
+      
+      // Slower interval for smooth scrolling
+      autoScrollRef.current = setTimeout(() => {
+        autoScrollRef.current = requestAnimationFrame(scrollOneItem);
+      }, 3000);
+    };
+
+    // Start auto-scrolling
+    startAutoScroll();
+
+    // Clean up on unmount
+    return () => {
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
+        clearTimeout(autoScrollRef.current);
+      }
+    };
+  }, []);
+
   return (
     <PageSection title="Our Capabilities" subtitle="Explore our expertise">
-      <div className="overflow-hidden relative">
-        <HorizontalScroll 
-          autoScroll={true} 
-          autoScrollSpeed={0.5} 
-          infiniteLoop={true}
-          className="py-4"
+      <div className="w-full overflow-hidden relative">
+        <Carousel
+          ref={carouselRef}
+          opts={{
+            align: "start",
+            loop: true,
+            dragFree: true,
+            containScroll: false,
+          }}
+          className="w-full"
+          setApi={(api) => {
+            if (carouselRef.current) carouselRef.current.api = api;
+          }}
         >
-          {capabilities.map((item, index) => (
-            <div 
-              key={`card-${index}`}
-              className="min-w-[300px] flex-shrink-0 px-3"
-            >
-              <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
-                <div className="text-bean mb-4">
-                  <item.icon size={24} />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-foreground/70">
-                  Expert solutions tailored to your unique business needs.
-                </p>
-              </Card>
-            </div>
-          ))}
-        </HorizontalScroll>
+          <CarouselContent className="select-none">
+            {duplicatedCapabilities.map((item, index) => (
+              <CarouselItem 
+                key={`card-${index}`} 
+                className="pl-4 md:basis-1/3 lg:basis-1/4"
+              >
+                <Card className="h-full p-6 flex flex-col items-center justify-center text-center cursor-grab active:cursor-grabbing">
+                  <div className="text-bean mb-4">
+                    <item.icon size={24} />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-foreground/70">
+                    Expert solutions tailored to your unique business needs.
+                  </p>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          
+          <div className="hidden md:block">
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </div>
+        </Carousel>
       </div>
     </PageSection>
   );
