@@ -212,14 +212,17 @@ const HorizontalScroll: React.FC<HorizontalScrollProps> = ({
   return (
     <div 
       ref={containerRef} 
-      className={`w-full overflow-hidden cursor-grab ${className}`}
+      className={`w-full overflow-hidden cursor-grab select-none ${className}`}
     >
       <div 
         ref={scrollRef} 
-        className="overflow-x-auto scrollbar-hide flex"
+        className="overflow-x-hidden scrollbar-hide flex"
         style={{
           scrollBehavior: 'smooth',
           WebkitOverflowScrolling: 'touch',
+          msOverflowStyle: 'none',  /* IE and Edge */
+          scrollbarWidth: 'none',   /* Firefox */
+          userSelect: 'none'
         }}
       >
         {children}
