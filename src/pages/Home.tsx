@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -23,20 +22,13 @@ import ScrollAnimator from '@/components/ui/ScrollAnimator';
 import MagneticButton from '@/components/ui/MagneticButton';
 import ParallaxSection from '@/components/ui/ParallaxSection';
 import CountUp from '@/components/ui/CountUp';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+import HorizontalScroll from '@/components/ui/HorizontalScroll';
 import Building from '@/components/ui/Building';
 import MapPin from '@/components/ui/MapPin';
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const autoScrollRef = useRef<NodeJS.Timeout | null>(null);
-  const isDraggingRef = useRef(false);
 
   const words = ["Digital", "Business", "Creative", "Innovative"];
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -61,93 +53,6 @@ const Home = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Auto-scrolling carousel setup
-  useEffect(() => {
-    const startAutoScroll = () => {
-      if (carouselRef.current && !isDraggingRef.current) {
-        const scrollAmount = 1; // Adjust for slower/faster scrolling
-        carouselRef.current.scrollLeft += scrollAmount;
-        
-        // Loop back to start when reaching the end
-        if (
-          carouselRef.current.scrollLeft + carouselRef.current.clientWidth >=
-          carouselRef.current.scrollWidth
-        ) {
-          carouselRef.current.scrollLeft = 0;
-        }
-      }
-      
-      autoScrollRef.current = setTimeout(startAutoScroll, 20); // Adjust timing for smoother scrolling
-    };
-    
-    // Start auto-scrolling
-    startAutoScroll();
-    
-    return () => {
-      if (autoScrollRef.current) {
-        clearTimeout(autoScrollRef.current);
-      }
-    };
-  }, []);
-
-  // Handle manual interaction with the carousel
-  useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel) return;
-    
-    const handleMouseDown = () => {
-      isDraggingRef.current = true;
-      if (autoScrollRef.current) clearTimeout(autoScrollRef.current);
-    };
-    
-    const handleMouseUp = () => {
-      isDraggingRef.current = false;
-      
-      // Resume auto-scrolling after a short delay
-      setTimeout(() => {
-        const startAutoScroll = () => {
-          if (carouselRef.current && !isDraggingRef.current) {
-            carouselRef.current.scrollLeft += 1;
-            
-            if (
-              carouselRef.current.scrollLeft + carouselRef.current.clientWidth >=
-              carouselRef.current.scrollWidth
-            ) {
-              carouselRef.current.scrollLeft = 0;
-            }
-          }
-          
-          autoScrollRef.current = setTimeout(startAutoScroll, 20);
-        };
-        
-        startAutoScroll();
-      }, 1000); // Resume after 1 second of inactivity
-    };
-    
-    const handleTouchStart = () => {
-      isDraggingRef.current = true;
-      if (autoScrollRef.current) clearTimeout(autoScrollRef.current);
-    };
-    
-    const handleTouchEnd = () => {
-      handleMouseUp(); // Reuse the mouseup logic
-    };
-    
-    carousel.addEventListener('mousedown', handleMouseDown);
-    carousel.addEventListener('mouseup', handleMouseUp);
-    carousel.addEventListener('mouseleave', handleMouseUp);
-    carousel.addEventListener('touchstart', handleTouchStart);
-    carousel.addEventListener('touchend', handleTouchEnd);
-    
-    return () => {
-      carousel.removeEventListener('mousedown', handleMouseDown);
-      carousel.removeEventListener('mouseup', handleMouseUp);
-      carousel.removeEventListener('mouseleave', handleMouseUp);
-      carousel.removeEventListener('touchstart', handleTouchStart);
-      carousel.removeEventListener('touchend', handleTouchEnd);
-    };
   }, []);
 
   const jobOpenings = [
@@ -376,16 +281,16 @@ const Home = () => {
 
       <PageSection title="Our Capabilities" subtitle="Explore our expertise">
         <div className="overflow-hidden relative">
-          <div
-            ref={carouselRef}
-            className="flex overflow-x-auto gap-6 py-4 scrollbar-hide cursor-grab"
-            style={{ scrollBehavior: 'smooth' }}
+          <HorizontalScroll 
+            autoScroll={true} 
+            autoScrollSpeed={0.5} 
+            infiniteLoop={true}
+            className="py-4"
           >
-            {/* Add duplicate items at beginning and end for seamless looping */}
             {capabilities.map((item, index) => (
               <div 
                 key={`card-${index}`}
-                className="min-w-[300px] flex-shrink-0"
+                className="min-w-[300px] flex-shrink-0 px-3"
               >
                 <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
                   <div className="text-bean mb-4">
@@ -398,24 +303,7 @@ const Home = () => {
                 </Card>
               </div>
             ))}
-            {/* Duplicate first few items to create seamless loop effect */}
-            {capabilities.slice(0, 3).map((item, index) => (
-              <div 
-                key={`duplicate-${index}`}
-                className="min-w-[300px] flex-shrink-0"
-              >
-                <Card className="h-full p-6 flex flex-col items-center justify-center text-center">
-                  <div className="text-bean mb-4">
-                    <item.icon size={24} />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="text-foreground/70">
-                    Expert solutions tailored to your unique business needs.
-                  </p>
-                </Card>
-              </div>
-            ))}
-          </div>
+          </HorizontalScroll>
         </div>
       </PageSection>
 
